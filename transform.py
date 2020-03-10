@@ -1,9 +1,10 @@
 from PIL import Image
 import os
 import fnmatch
+import shutil
 
 
-for subdir, dirs, files in os.walk(os.path.expanduser('~danieljsottile/Desktop/TEST')):
+for subdir, dirs, files in os.walk(os.path.expanduser('~danieljsottile/Desktop/TEST')): # noqa
     for filename in files:
         if (
             # List of Exceptions I need to add:
@@ -19,7 +20,8 @@ for subdir, dirs, files in os.walk(os.path.expanduser('~danieljsottile/Desktop/T
             fnmatch.fnmatch(filename, "*Eff*.tga.png")
         ):
             # ALL the file endings we need for generic mirroring
-            imOrig = Image.open(os.path.join(subdir, filename))
+            path = os.path.join(subdir, filename)
+            imOrig = Image.open(path)
             width, height = imOrig.size
             mode = imOrig.mode
             # make a copy of this image, mirror the copy,
@@ -30,9 +32,17 @@ for subdir, dirs, files in os.walk(os.path.expanduser('~danieljsottile/Desktop/T
             imFinal.paste(imOrig)
             imFinal.paste(imFlip, (width, 0))
             # image...save it as the OLD image name!
-            imFinal.save(os.path.join(subdir, filename))
-
-            print(filename + ' sucessfully transformed!')
+            imFinal.save(path)
+            print(filename + ' mirrored!')
+            # now we're gonna do two transformations with waifu
+            os.system(f"python waifu2x.py -m noise_scale -n 2 -i {path} -a 0 -g 0") # noqa
+            # then we have to move it back before it does it again. . .
+            waifuPath = os.path.expanduser(f'~danieljsottile/projects/model_image_transform/waifu2x-chainer/{filename}') # noqa
+            shutil.move(waifuPath, path)
+            print(filename + ' transformed and moved x1')
+            os.system(f"python waifu2x.py -m noise_scale -n 2 -i {path} -a 0 -g 0") # noqa
+            shutil.move(waifuPath, path)
+            print(filename + ' transformed and moved x2!')
             continue
         elif (
                 # List of Exceptions I need to add:
@@ -45,7 +55,8 @@ for subdir, dirs, files in os.walk(os.path.expanduser('~danieljsottile/Desktop/T
                 fnmatch.fnmatch(filename, "*Mouth?.tga.png")
         ):
             # open like normal
-            imOrigTwo = Image.open(os.path.join(subdir, filename))
+            pathTwo = os.path.join(subdir, filename)
+            imOrigTwo = Image.open(pathTwo)
             w, h = imOrigTwo.size
             m = imOrigTwo.mode
             # Make a new image
@@ -61,7 +72,15 @@ for subdir, dirs, files in os.walk(os.path.expanduser('~danieljsottile/Desktop/T
             imFinalTwo.paste(imOrigTwo, (round(w / 2), 0))
             imFinalTwo.paste(imFlipRight, (round(w + (w / 2)), 0))
             # image....save it as the OLD image name!
-            imFinalTwo.save(os.path.join(subdir, filename))
-
-            print(filename + ' sucessfully transformed!')
+            imFinalTwo.save(pathTwo)
+            print(filename + ' mirrored!')
+            # now we're gonna do two transformations with waifu
+            os.system(f"python waifu2x.py -m noise_scale -n 2 -i {path} -a 0 -g 0") # noqa
+            # then we have to move it back before it does it again. . .
+            waifuPathTwo = os.path.expanduser(f'~danieljsottile/projects/model_image_transform/waifu2x-chainer/{filename}') # noqa
+            shutil.move(waifuPathTwo, pathTwo)
+            print(filename + ' transformed and moved x1')
+            os.system(f"python waifu2x.py -m noise_scale -n 2 -i {path} -a 0 -g 0") # noqa
+            shutil.move(waifuPathTwo, pathTwo)
+            print(filename + ' transformed and moved x2!')
             continue

@@ -12,12 +12,12 @@ These transformations were used on the exported USUM models and textures as part
 
 # transform.py
 
-- You will need to create a `venv` and install the `PILLOW` module in your virtual environment in order for `transform.py` script to function properly.  This can be done with `pip install pillow`.
+- You will need to create a `venv` and install the `CHAINER` & `PILLOW` module in your virtual environment in order for `transform.py` script to function properly.  This can be done with `pip install chainer` and `pip install pillow`.
 
-- On line 8, where it says `for subdir, dirs, files in os.walk(os.path.expanduser('~danieljsottile/Desktop/TEST')):`, replace the directory with YOUR full pathname for your extracted directory.  This python script does NOT need to be in the same folder as your files.  In this particular example, my directory was named `TEST`, but it will likely be called `SMD` if you use the pyautogui script to extract the models.
+- If you are on Windows and Linux and wish to utilize GPU, you should also install CuPy here: https://docs-cupy.chainer.org/en/stable/install.html#install-cupy
 
--------------
+- Lastly, clone waifu2x-chainer using `git clone https://github.com/tsurumeso/waifu2x-chainer.git`
 
-# waifu2x-model.py
+- PLACE THIS SCRIPT INSIDE THE WAIFU2X-CHAINER FOLDER!
 
-- You will need ???? in order for the `waifu2x-models.py` script to function properly.
+- On line 6, where it says `for subdir, dirs, files in os.walk(os.path.expanduser('~danieljsottile/Desktop/TEST')):`, replace the directory with YOUR full pathname for your extracted directory.  This python script does NOT need to be in the same folder as your files.  In this particular example, my directory was named `TEST`, but it will likely be called `SMD` if you use the pyautogui script to extract the models.
