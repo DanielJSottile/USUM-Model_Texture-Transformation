@@ -2,9 +2,10 @@ from PIL import Image
 import os
 import fnmatch
 import shutil
+import subprocess
 
 
-for subdir, dirs, files in os.walk(os.path.expanduser('~danieljsottile/Desktop/TEST')): # noqa
+for subdir, dirs, files in os.walk(os.path.expanduser('F:/TEST')): # noqa
     for filename in files:
         if (
             # List of Exceptions I need to add:
@@ -34,15 +35,16 @@ for subdir, dirs, files in os.walk(os.path.expanduser('~danieljsottile/Desktop/T
             # image...save it as the OLD image name!
             imFinal.save(path)
             print(filename + ' mirrored!')
+            path = os.path.normpath(path)
+            direc = os.path.normpath('C:/Users/Daniel/projects/usum-model-texture-transformation/waifu2x-ncnn-vulkan-20200224/')
+            waifuPath = f'{direc}{filename}'
             # now we're gonna do two transformations with waifu
-            os.system(f"python waifu2x.py -m noise_scale -n 2 -i {path} -a 0 -g 0") # noqa
-            # then we have to move it back before it does it again. . .
-            waifuPath = os.path.expanduser(f'~danieljsottile/projects/model_image_transform/waifu2x-chainer/{filename}') # noqa
+            subprocess.check_call(('waifu2x-ncnn-vulkan', '-i', path, '-o', waifuPath, '-n', '2', '-s', '2')) # noqa
             shutil.move(waifuPath, path)
-            print(filename + ' transformed and moved x1')
-            os.system(f"python waifu2x.py -m noise_scale -n 2 -i {path} -a 0 -g 0") # noqa
+            print(filename + ' transformed x1')
+            subprocess.check_call(('waifu2x-ncnn-vulkan', '-i', path, '-o', waifuPath, '-n', '2', '-s', '2')) # noqa
             shutil.move(waifuPath, path)
-            print(filename + ' transformed and moved x2!')
+            print(filename + ' transformed x2!')
             continue
         elif (
                 # List of Exceptions I need to add:
@@ -74,13 +76,14 @@ for subdir, dirs, files in os.walk(os.path.expanduser('~danieljsottile/Desktop/T
             # image....save it as the OLD image name!
             imFinalTwo.save(pathTwo)
             print(filename + ' mirrored!')
+            pathTwo = os.path.normpath(pathTwo)
+            direc = os.path.normpath('C:/Users/Daniel/projects/usum-model-texture-transformation/waifu2x-ncnn-vulkan-20200224/')
+            waifuPathTwo = f'{direc}{filename}'
             # now we're gonna do two transformations with waifu
-            os.system(f"python waifu2x.py -m noise_scale -n 2 -i {path} -a 0 -g 0") # noqa
-            # then we have to move it back before it does it again. . .
-            waifuPathTwo = os.path.expanduser(f'~danieljsottile/projects/model_image_transform/waifu2x-chainer/{filename}') # noqa
+            subprocess.check_call(('waifu2x-ncnn-vulkan', '-i', pathTwo, '-o', waifuPathTwo, '-n', '2', '-s', '2')) # noqa
             shutil.move(waifuPathTwo, pathTwo)
-            print(filename + ' transformed and moved x1')
-            os.system(f"python waifu2x.py -m noise_scale -n 2 -i {path} -a 0 -g 0") # noqa
+            print(filename + ' transformed x1')
+            subprocess.check_call(('waifu2x-ncnn-vulkan', '-i', pathTwo, '-o', waifuPathTwo, '-n', '2', '-s', '2')) # noqa
             shutil.move(waifuPathTwo, pathTwo)
-            print(filename + ' transformed and moved x2!')
+            print(filename + ' transformed x2!')
             continue
